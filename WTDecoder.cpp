@@ -81,31 +81,31 @@ void receiveWTsignal()
   unsigned long duration;
   unsigned long time_us = micros();
 
-  if (digitalRead(INT_PIN)) {       // was rising edge
+  if (digitalRead(INT_PIN)) {         // was rising edge
     lastInt = time_us;
     // check duration to last rising edge
     duration = time_us - lastTime;
-    if (duration < 2400ul) {         // no valid duration
+    if (duration < 2400ul) {          // no valid duration
       valid = false;
-    } else if (duration < 3000ul) {  // 0 detected
+    } else if (duration < 3000ul) {   // 0 detected
       code <<= 1;
-    } else if (duration < 5000ul) {  // 1 detected 
+    } else if (duration < 5000ul) {   // 1 detected 
       code <<= 1;
       code |= 1;
-    } else {                        // sync detected
+    } else {                          // sync detected
       if (code & 0xFF00000000ull) {
-        CodeID = id;                // set current id for loop()
+        CodeID = id;                  // set current id for loop()
         Codes[id] = code;
         if (++id >= MAX_CODES) id = 0;
-        dataReady = true;           // loop() has to decode last transmission
+        dataReady = true;             // loop() has to decode last transmission
       }
       code = 0;
     }
-  } else {                          // was falling edge
+  } else {                            // was falling edge
     duration = time_us - lastInt;
-    if (duration < 500ul) {         // noise filter - pulse to short
+    if (duration < 500ul) {           // noise filter - pulse to short
       valid = false;
-    } else if (duration < 1100ul) { // detected pulse between 500 and 1100us
+    } else if (duration < 1100ul) {   // detected pulse between 500 and 1100us
       valid = true;
       lastTime = lastInt;
     }
@@ -161,7 +161,7 @@ void WTDecoder::Loop()
 bool WTDecoder::decodeRecord(uint64_t value, struct rec &record)
 {
   int check_calc = 0;
-  int check_recv = value & 0x3FL;
+  int check_recv = value & 0x3Full;
   unsigned long tmp = (value>>5) & ~1l;
 
   for (int i = 0; i < 8; i++)
@@ -169,18 +169,18 @@ bool WTDecoder::decodeRecord(uint64_t value, struct rec &record)
     check_calc += (tmp & 0xFl);
     tmp >>= 4;
   }
-  check_calc &= 0x3FL;
+  check_calc &= 0x3F;
 
   record.valid = check_recv == check_calc;
   
   if (record.valid)
   {
-    tmp = value>>6;                             // skip checksum
+    tmp = value>>6;                            // skip checksum
     record.humidity = tmp & 0x7F;              // 7 bit humidity
     tmp >>= 7;
-    record.temprature = ((tmp&0xFFF)<<4) / 16; // 12 bit 2th complement
+    record.temprature = ((tmp&0xFFF)<<4) / 16;  // 12 bit 2th complement (preserve sign bit by shifting to MSB and dividing)
     tmp >>= 12;
-    record.channel = (tmp & 0x3);              // 2 bit channel
+    record.channel = tmp & 0x3;                // 2 bit channel
     tmp >>= 2;
     record.button = tmp & 0x1;                 // 1 bit button
     tmp >>= 1;
@@ -216,5 +216,11 @@ void WTDecoder::printRecord(struct rec &record)
     if (record.battery) Serial.print("BAT LOW");
     Serial.println();
   }
+}
+
+bool WTDecoder::GetRecord(struct rec &record)
+{
+  // ToDo: store received records and make them available outside the class
+  return false; // no record available 
 }
 

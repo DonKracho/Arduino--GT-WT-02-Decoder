@@ -17,13 +17,13 @@ class WTDecoder {
 public:
   struct rec
   {
-    bool valid;       // record is valid
-    byte txid;        // transmitter ID random when battery gets inserted
-    bool battery;     // 1 if battery is low
-    bool button;      // true if was triggerd by tx transmit button
-    byte channel;     // channel switch of transmitter 1,2,3
-    int  temprature;  // terperature in 1/10 °C
-    int  humidity;    // humidity in %
+    bool valid;         // record is valid
+    byte txid;          // transmitter ID random when battery gets inserted
+    bool battery;       // 1 if battery is low
+    bool button;        // true if was triggerd by tx transmit button
+    byte channel;       // channel switch of transmitter 1,2,3
+    int16_t temprature; // terperature in 1/10 °C
+    int16_t humidity;   // humidity in %
     unsigned long timestamp;
   };
 
@@ -32,11 +32,11 @@ public:
 
   void Loop();
   void Setup();
-  void GetRecord(struct rec &record);
-  void printRecord(struct rec &record);
+  bool GetRecord(struct rec &record);
 
 private:
   bool decodeRecord(uint64_t value, struct rec &record);
+  void printRecord(struct rec &record);
 };
 
 extern WTDecoder wtd;
