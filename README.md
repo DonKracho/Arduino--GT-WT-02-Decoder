@@ -1,4 +1,4 @@
-# GT-WT-02-Decoder for Arduino projects
+# GT-WT-02 Decoder for Arduino projects
 
 This project is for decoding 433MHz AM transmissions of a GT-WT-02 weather station transmitter.
 There are a lot of identical transmitters sending a 37bit code for temperature and humidity.
