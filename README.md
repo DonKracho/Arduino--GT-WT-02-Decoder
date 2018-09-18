@@ -16,6 +16,6 @@ you to implement the data publishing to a sink of your choice (e. g. web page or
 
 The Rx data pulses are captured and analyzed interrupt driven and the decoding is done in the arduino loop().
 
-The challenge of this project was the detection and digital noise canceling of the weak AM signal out of a
-very noisy 433MHz band environment. Therefore pulse detection in the interrupt service routine relies on
-active periods of the AM signal only to achieve the best possible reception range.
+The challenge of this project has been the detection and digital noise canceling of the weak AM signal of the
+transmitter out of a very noisy 433MHz band environment. Therefore pulse detection in the interrupt service
+routine relies on active periods of the AM signal only to achieve the best possible reception range.
