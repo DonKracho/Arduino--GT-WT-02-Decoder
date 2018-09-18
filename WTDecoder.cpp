@@ -64,7 +64,7 @@ P = 31-36,  6 Bit = Prüfsumme 8 Nibbles aufsummiert
 
 WTDecoder wtd;
 
-// global variables to be accessed from interupt handler and Loop
+// global variables to be accessed from interrupt handler and Loop
 uint64_t Codes[MAX_CODES];
 volatile bool dataReady = false;
 volatile byte CodeID = 0;
