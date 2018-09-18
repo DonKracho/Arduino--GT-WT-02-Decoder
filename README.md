@@ -11,7 +11,7 @@ These receivers operate at 3.3V without any issues.
 
 This project just incudes a class WTDecoder with the decoding algorithm and storing the decoded
 data into a structure. This structue is visualized by simple Serial.print() commands. It is up to
-you to implement the data publishing to a sink of your choice (e. g. a web page or a spread sheet)
+you to implement the data publishing to a sink of your choice (e. g. web page or data base)
 
 The Rx data pulses are captured and analyzed interrupt driven and the decoding is done in the arduino loop().
 The challenge of this project was the digital filtering the AM signal out of the heavy noise of the 433MHz band,
