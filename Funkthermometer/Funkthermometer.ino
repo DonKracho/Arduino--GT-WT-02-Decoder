@@ -16,5 +16,10 @@ void setup()
 
 void loop()
 {
+  WTDecoder::rec data;
+  
   wtd.Loop();
+  if (wtd.GetRecord(data)) {
+    Serial.println(wtd.Record2String(data));
+  }
 }

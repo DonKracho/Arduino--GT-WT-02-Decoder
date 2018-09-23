@@ -1,14 +1,12 @@
 #include <Arduino.h>
 
-#define WTD_DEBUG
+//#define WTD_DEBUG
 //#define WTD_DEBUG_VERBOSE
 //#define VALID_TX_ID_ONLY
 
 // WeMos D1 mini
 #define INT_PIN D2  // GPIO0
-#ifdef WTD_DEBUG
 #define LED_PIN D4  // GPIO2
-#endif
 
 #define MAX_CODES 20
 #define MAX_RECORDS 20
@@ -33,10 +31,15 @@ public:
   void Loop();
   void Setup();
   bool GetRecord(struct rec &record);
+  char *Record2String(struct rec &record);
 
 private:
   bool decodeRecord(uint64_t value, struct rec &record);
-  void printRecord(struct rec &record);
+  void storeRecord(struct rec &record);
+  int  mLastReadRec = -1;
+  int  mLastStoredRec = -1;
+  struct rec mRecords[MAX_RECORDS];
+  char mBuffer[64];
 };
 
 extern WTDecoder wtd;

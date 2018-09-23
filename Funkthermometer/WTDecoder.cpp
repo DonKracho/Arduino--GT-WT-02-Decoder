@@ -110,14 +110,14 @@ void receiveWTsignal()
       }
     }
   }
-#ifdef WTD_DEBUG
+#ifdef LED_PIN
   digitalWrite(LED_PIN, !valid);                // LED signals stable reception with long flashes for > 6x120 ms 
 #endif
 }
 
 void WTDecoder::Setup()
 {
-#ifdef WTD_DEBUG
+#ifdef LED_PIN
   pinMode(LED_PIN, OUTPUT);
 #endif
   attachInterrupt(digitalPinToInterrupt(INT_PIN), receiveWTsignal, CHANGE);
@@ -147,8 +147,9 @@ void WTDecoder::Loop()
     if (Codes[index] != Codes[index_prev] || last_recv < time_us) {
       struct rec data;
       if (decodeRecord(Codes[index], data)) {
+        storeRecord(data);
 #ifdef WTD_DEBUG
-        printRecord(data);
+        Serial.println(Record2String(data));
 #endif
         last_recv = time_us + 30000ul;      // accept the next sequence in 30 seconds 
 #ifdef WTD_DEBUG_VERBOSE
@@ -166,8 +167,43 @@ void WTDecoder::Loop()
 
 bool WTDecoder::GetRecord(struct rec &record)
 {
-  // ToDo: store received records and make them available outside the class
-  return false; // no record available 
+  bool ret = false;
+  if (mLastStoredRec >= 0) {
+    int last_read_rec = mLastReadRec + 1;
+    if (last_read_rec >= MAX_RECORDS) last_read_rec = 0;
+    if (last_read_rec != mLastStoredRec) {
+      record = mRecords[last_read_rec];
+      mLastReadRec = last_read_rec;
+      ret = true;
+    }
+  }
+  return ret; 
+}
+
+char *WTDecoder::Record2String(struct rec &record)
+{
+  sprintf(mBuffer, "Sensor %d : %0.1f°C %d%% (%02x%s%s)",
+    record.channel + 1,
+    (float) record.temprature / 10.0,
+    record.humidity,
+    record.txid,
+    record.battery ? ", LOW BAT" : "",
+    record.button ? ", TX BUT" : ""
+  );
+  return mBuffer;
+}
+
+void WTDecoder::storeRecord(struct rec &record)
+{
+  if (record.valid) {
+    if (mLastStoredRec < 0) mLastStoredRec++;
+    int last_stored_rec = mLastStoredRec + 1;
+    if (last_stored_rec >= MAX_RECORDS) last_stored_rec = 0;
+    if (last_stored_rec == mLastReadRec) mLastReadRec++;
+    if (mLastReadRec >= MAX_RECORDS) mLastReadRec = 0;
+    mRecords[mLastStoredRec] = record;
+    mLastStoredRec = last_stored_rec;
+  }
 }
 
 bool WTDecoder::decodeRecord(uint64_t value, struct rec &record)
@@ -209,25 +245,5 @@ bool WTDecoder::decodeRecord(uint64_t value, struct rec &record)
 #endif
   }
   return record.valid;
-}
-
-void WTDecoder::printRecord(struct rec &record)
-{
-  if (record.valid) {
-    Serial.print("Sensor Ch");
-    Serial.print(record.channel + 1);
-    Serial.print(" (");
-    Serial.print(record.txid, HEX);
-    Serial.print("): ");
-    Serial.print(record.temprature / 10);
-    Serial.print(".");
-    Serial.print(abs(record.temprature) % 10);
-    Serial.print("°C ");
-    Serial.print(record.humidity);
-    Serial.print("% ");
-    if (record.button) Serial.print("BUTTON ");
-    if (record.battery) Serial.print("BAT LOW");
-    Serial.println();
-  }
 }
 
