@@ -227,7 +227,8 @@ bool WTDecoder::decodeRecord(uint64_t value, struct rec &record)
     tmp = value>>6;                            // skip checksum
     record.humidity = tmp & 0x7F;              // 7 bit humidity
     tmp >>= 7;
-    record.temprature = ((tmp&0xFFF)<<4) / 16; // 12 bit 2th complement (preserve sign bit by shifting to MSB and dividing)
+    int16_t val = (tmp&0xFFF)<<4;              // temperature is given in 12 bit 2th complement
+    record.temperature = val / 16;             // preserve sign bit by shifting to MSB and dividing by shift factor
     tmp >>= 12;
     record.channel = tmp & 0x3;                // 2 bit channel
     tmp >>= 2;
