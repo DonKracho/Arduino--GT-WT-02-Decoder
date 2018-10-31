@@ -20,7 +20,7 @@ public:
     bool battery;       // 1 if battery is low
     bool button;        // true if was triggerd by tx transmit button
     byte channel;       // channel switch of transmitter 1,2,3
-    int16_t temprature; // terperature in 1/10 °C
+    int16_t temperature;// terperature in 1/10 °C
     int16_t humidity;   // humidity in %
     uint32_t timestamp; // time this record was created
   };
