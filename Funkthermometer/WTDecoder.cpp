@@ -184,7 +184,7 @@ char *WTDecoder::Record2String(struct rec &record)
 {
   sprintf(mBuffer, "Sensor %d : %0.1f°C %d%% (%02x%s%s)",
     record.channel + 1,
-    (float) record.temprature / 10.0,
+    (float) record.temperature / 10.0,
     record.humidity,
     record.txid,
     record.battery ? ", LOW BAT" : "",
