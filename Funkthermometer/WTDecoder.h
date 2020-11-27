@@ -8,6 +8,10 @@
 #define INT_PIN D2  // GPIO0
 #define LED_PIN D4  // GPIO2
 
+// Arducam ESP8266
+//#define INT_PIN D6  // GPIO0
+//#define LED_PIN LED_BUILTIN  // GPIO2
+
 #define MAX_CODES 20
 #define MAX_RECORDS 20
 
