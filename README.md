@@ -1,6 +1,6 @@
 # GT-WT-02 Decoder for Arduino projects
 
-This project is for decoding 433MHz AM transmissions of a GT-WT-02 weather station transmitter.
+This project is for decoding 433MHz AM transmissions of a GT-WT-02 and AFT 77 A1 weather station transmitters.
 There are a lot of identical transmitters sending a 37bit code for temperature and humidity.
 
 The code is designed for the Arduino IDE and a ESP8266 device but should work with Arduino hardware too.
