@@ -182,11 +182,9 @@ bool WTDecoder::GetRecord(struct rec &record)
 
 char *WTDecoder::Record2String(struct rec &record)
 {
-   char str_temp[10];
-   dtostrf((float) record.temperature / 10.0, 3, 1, str_temp);
-   sprintf(mBuffer, "Sensor %d : %s°C %d%% (%02x%s%s)",
+   sprintf(mBuffer, "Sensor %d : %0.1f°C %d%% (%02x%s%s)",
     record.channel + 1,
-    str_temp,
+    (float) record.temperature / 10.0,
     record.humidity,
     record.txid,
     record.battery ? ", LOW BAT" : "",
