@@ -72,7 +72,7 @@ volatile bool dataReady = false;
 volatile byte CodeID = 0;
 
 // interrupt service for 433MHz receiver attached to INT_PIN
-void receiveWTsignal()
+void ICACHE_RAM_ATTR receiveWTsignal()
 {
   static unsigned long lastRise = 0;
   static unsigned long lastTime = 0;
