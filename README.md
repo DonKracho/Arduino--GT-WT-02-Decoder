@@ -1,7 +1,7 @@
 # This repository is not maintained anymore!
 
-Please refer to updated ESPhome repository:
-[ESPHome-component-BME280-I2C(https://github.com/DonKracho/ESPHome-component-BME280-I2C)
+Please refer to new ESPhome repository:
+[ESPHome-component-BME280-I2C](https://github.com/DonKracho/ESPHome-component-BME280-I2C)
 
 # GT-WT-02 Decoder for Arduino projects
 
