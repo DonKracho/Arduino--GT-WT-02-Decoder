@@ -1,3 +1,8 @@
+# This repository is not maintained anymore!
+
+Please refer to updated ESPhome repository:
+[ESPHome-component-BME280-I2C(https://github.com/DonKracho/ESPHome-component-BME280-I2C)
+
 # GT-WT-02 Decoder for Arduino projects
 
 This project is for decoding 433MHz AM transmissions of a GT-WT-02 and AFT 77 A1 weather station transmitters.
