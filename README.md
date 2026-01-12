@@ -1,7 +1,7 @@
 # This repository is not maintained anymore!
 
 Please refer to new ESPhome repository:
-[ESPHome-component-BME280-I2C](https://github.com/DonKracho/ESPHome-component-BME280-I2C)
+[ESPHome-component-433MHz-Sensor-Hub](https://github.com/DonKracho/ESPHome-component-433MHz-Sensor-Hub)
 
 # GT-WT-02 Decoder for Arduino projects
 
